@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLa
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtCore import Qt, QTimer, QDateTime
 from prediction import bay_classification
-from model_definition import ConvNetWithReLU
+from model_definition2 import ConvNetNoPadding
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -13,7 +13,7 @@ class MainWindow(QMainWindow):
 
     def initUI(self):
         self.setWindowTitle('IIT Hyderabad Parking Real-Time Info')
-        self.setGeometry(600, 400, 750, 450)
+        self.setGeometry(1000, 500, 750, 450)
         self.centralWidget = QWidget(self)
         self.setCentralWidget(self.centralWidget)
 
@@ -64,16 +64,15 @@ class WelcomeWindow(QWidget):
     def initUI(self):
         self.setStyleSheet("background-color: black;")
         self.layout = QVBoxLayout(self)
-        self.layout.setContentsMargins(0, 0, 0, 0)
 
-        # Add spacer at the top to push buttons to the bottom
+        # Add stretchable space at the top
         self.layout.addStretch()
 
         self.info_label = QLabel('Welcome to IIT Hyderabad Parking Real-Time Info', self)
         self.info_label.setAlignment(Qt.AlignCenter)
         self.info_label.setStyleSheet("""
             QLabel {
-                background-color: rgba(0, 0, 0, 0.4);
+                background-color: rgba(0, 0, 0, 0.5);
                 color: white;
                 font-size: 16pt;
             }
@@ -81,6 +80,9 @@ class WelcomeWindow(QWidget):
         self.info_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.info_label.setFixedHeight(50)
         self.layout.addWidget(self.info_label)
+
+        # Add stretchable space to push buttons to the bottom
+        self.layout.addStretch()
 
         # Horizontal layout for buttons
         self.button_layout = QHBoxLayout()
@@ -103,7 +105,7 @@ class WelcomeWindow(QWidget):
 
         self.layout.addLayout(self.button_layout)
 
-        # Add spacer at the bottom to ensure buttons are at the bottom
+        # Add stretchable space at the bottom
         self.layout.addStretch()
 
         # Connect stylesheet for button hover effect
@@ -112,6 +114,7 @@ class WelcomeWindow(QWidget):
                 background-color: rgba(255, 255, 255, 0.7);
             }
         """)
+
 
 class ParkingOptions(QWidget):
     def __init__(self, main_window):
@@ -172,7 +175,7 @@ class ParkingInfoWindow(QWidget):
         self.block_name = block_name
 
     def showEvent(self, event):
-        self.timer.start(30)
+        self.timer.start(10)
 
     def update_frame(self):
         try:
